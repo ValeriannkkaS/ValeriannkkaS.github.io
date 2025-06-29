@@ -1,12 +1,17 @@
 #tutorial-screen{
     position: relative;
     cursor: pointer;
-    background: #00D4FF;
-    background: linear-gradient(135deg, rgba(0, 212, 255, 1) 0%, rgba(31, 182, 219, 1) 88%);
+    background: var(--blue-color);
+}
+#countdown-screen{
+    background: #067690;
+}
+#game-screen{
+
 }
 #task-large-pane{
     color: #f7f5fa;
-    background: #10b9e2;
+    background: var(--blue-color);
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -35,7 +40,6 @@ span{
     }
 }
 .pane-background{
-    background-color: #881fef;
     height: 150px;
     display: flex;
     align-items: center;
@@ -44,6 +48,21 @@ span{
     &#correct-pane{
         opacity: 100%;
         position: relative;
+    }
+    &.purple{
+        background-color: var(--purple-color);
+    }
+    &.red{
+        background-color: var(--red-color);
+    }
+    &.orange{
+        background-color: var(--orange-color);
+    }
+    &.blue{
+        background-color: var(--blue-color);
+    }
+    &.green{
+        background-color: var(--green-color);
     }
 }
 #tips-for-tutorial{
@@ -59,5 +78,18 @@ span{
     position: absolute;
     top: 100px;
     z-index: 3;
-
+}
+#countdown-circle{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background-color: #333333;
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

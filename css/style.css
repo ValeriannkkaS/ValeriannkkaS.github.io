@@ -4,6 +4,13 @@
     box-sizing: border-box;
     margin: 0;
 }
+html{
+    --purple-color: #881fef;
+    --orange-color: #f0ad4e;
+    --green-color: #4CAF50;
+    --blue-color: #0fbee6;
+    --red-color: #921e02;
+}
 body{
     font-size: 1.3rem;
     font-family: "Huninn", sans-serif;
@@ -30,6 +37,7 @@ body{
 .game-screen{
     width: 100%;
     height: 100%;
+    position: relative;
 }
 .game-container{
     width: 900px;
