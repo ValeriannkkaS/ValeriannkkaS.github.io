@@ -1,0 +1,63 @@
+#tutorial-screen{
+    position: relative;
+    cursor: pointer;
+    background: #00D4FF;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 1) 0%, rgba(31, 182, 219, 1) 88%);
+}
+#task-large-pane{
+    color: #f7f5fa;
+    background: #10b9e2;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 80%;
+    height: 150px;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+    position: relative;
+    top: 2rem;
+    box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
+    -webkit-box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
+    -moz-box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
+}
+span{
+    color: #f7f5fa;
+    font-size: 50px;
+    font-weight: 900;
+}
+.field-grid-of-pane{
+    display: grid;
+    gap: 3rem;
+    width: 80%;
+    margin: 0 auto;
+    &.easy{
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+.pane-background{
+    background-color: #881fef;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 70%;
+    &#correct-pane{
+        opacity: 100%;
+        position: relative;
+    }
+}
+#tips-for-tutorial{
+    color: #f7f5fa;
+    position: absolute;
+    width: 200px;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#arm-for-tutorial{
+    width: 100px;
+    position: absolute;
+    top: 100px;
+    z-index: 3;
+
+}

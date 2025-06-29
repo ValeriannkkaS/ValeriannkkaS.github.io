@@ -5,40 +5,72 @@
     <title>Найди число</title>
     <link rel="icon" type="image/svg+xml" href="/public/logo.png" />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/tutorial.css" />
 </head>
 <body>
 <div class="wrapper">
     <div class="game-container">
-        <div class="start-header">
-            <h1>
-                Найди число
-            </h1>
-            <h2>Тренажер на внимание</h2>
+        <div id="start-screen" class="game-screen" >
+            <div class="start-header">
+                <h1>
+                    Найди число
+                </h1>
+                <h2>Тренажер на внимание</h2>
+            </div>
+            <h2 id="train-h2">Тренирует:</h2>
+            <div class="start-advantages">
+            <figure class="advantages">
+                <img src="/public/attention.svg" alt="logo" />
+                <figcaption>
+                    <h3>Произвольное внимание</h3>
+                    <p>Научитесь концентрировать внимание только на важном</p>
+                </figcaption>
+            </figure>
+            <figure class="advantages">
+                <img src="/public/concentration.svg" alt="logo" />
+                <figcaption>
+                    <h3>Концентрацию и переключение внимания</h3>
+                    <p>Позволит не упускать из виду важные детали</p>
+                </figcaption>
+            </figure>
+            <figure class="advantages">
+                <img src="/public/preception.svg" alt="logo" />
+                <figcaption>
+                    <h3>Зрительное восприятие</h3>
+                    <p>Сможете быстро находить основные мысли в текстах</p>
+                </figcaption>
+            </figure>
+            <button id="start-game-button">Далее</button>
+            </div>
         </div>
-        <h2 id="train-h2">Тренирует:</h2>
-        <div class="start-advantages">
-        <figure class="advantages">
-            <img src="/public/attention.svg" alt="logo" />
-            <figcaption>
-                <h3>Произвольное внимание</h3>
-                Научитесь концентрировать внимание только на важном
-            </figcaption>
-        </figure>
-        <figure class="advantages">
-            <img src="/public/concentration.svg" alt="logo" />
-            <figcaption>
-                <h3>Концентрацию и переключение внимания</h3>
-                Позволит не упускать из виду важные детали
-            </figcaption>
-        </figure>
-        <figure class="advantages">
-            <img src="/public/preception.svg" alt="logo" />
-            <figcaption>
-                <h3>Зрительное восприятие</h3>
-                Сможете быстро находить основные мысли в текстах
-            </figcaption>
-        </figure>
-        <button id="start-game-button">Далее</button>
+
+        <div id="tutorial-screen" class="game-screen" style="display: none">
+            <div id="task-large-pane">
+                <h2 id="correct-answer-description">Найдите указанное число:</h2>
+                <span id="correct-number">47</span>
+            </div>
+            <div class="field-grid-of-pane easy">
+                <div class="pane-background" id="correct-pane">
+                    <img src="public/arm-for-tutorial.svg" id="arm-for-tutorial" />
+                    <span class="pane-inner">47</span>
+                </div>
+                <div class="pane-background"><span class="pane-inner">64</span></div>
+                <div class="pane-background"><span class="pane-inner">25</span></div>
+                <div class="pane-background"><span class="pane-inner">3</span></div>
+                <div class="pane-background"><span class="pane-inner">488</span></div>
+                <div class="pane-background"><span class="pane-inner">31</span></div>
+            </div>
+            <p id="tips-for-tutorial">
+                Нажмите на экран,<br>чтобы продолжить.
+            </p>
+        </div>
+
+        <div id="game-screen" class="game-screen" style="display: none">
+
+        </div>
+
+        <div id="end-screen" class="game-screen" style="display: none">
+
         </div>
     </div>
     <div class="description">
