@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <title>Найди число</title>
-    <link rel="icon" type="image/svg+xml" href="/img/logo.png" />
+    <link rel="icon" type="image/svg+xml" href="public/img/logo.png" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/tutorial.css" />
+    <link rel="stylesheet" href="css/pane.css" />
+    <link rel="stylesheet" href="css/countdown.css" />
+    <link rel="stylesheet" href="css/screen.css" />
 </head>
 <body>
 <div class="wrapper">
@@ -45,20 +48,20 @@
         </div>
 
         <div id="tutorial-screen" class="game-screen" style="display: none">
-            <div id="task-large-pane">
-                <h2 id="correct-answer-description">Найдите указанное число:</h2>
-                <span id="correct-number">47</span>
+            <div class="task-large-pane blue">
+                <h2 class="correct-answer-description">Найдите указанное число:</h2>
+                <span class="correct-number">47</span>
             </div>
             <div class="field-grid-of-pane easy">
                 <div class="pane-background purple" id="correct-pane">
                     <img src="public/img/arm-for-tutorial.svg" id="arm-for-tutorial" />
                     <span class="pane-inner">47</span>
                 </div>
-                <div class="pane-background orange"><span class="pane-inner">64</span></div>
-                <div class="pane-background red"><span class="pane-inner">25</span></div>
-                <div class="pane-background green"><span class="pane-inner">3</span></div>
-                <div class="pane-background blue"><span class="pane-inner">488</span></div>
-                <div class="pane-background green"><span class="pane-inner">31</span></div>
+                <div class="pane-background orange tutorial"><span class="pane-inner">64</span></div>
+                <div class="pane-background red tutorial"><span class="pane-inner">25</span></div>
+                <div class="pane-background green tutorial"><span class="pane-inner">3</span></div>
+                <div class="pane-background blue tutorial"><span class="pane-inner">488</span></div>
+                <div class="pane-background green tutorial"><span class="pane-inner">31</span></div>
             </div>
             <p id="tips-for-tutorial">
                 Нажмите на экран,<br>чтобы продолжить.
@@ -71,8 +74,19 @@
             </div>
         </div>
 
-        <div id="game-screen" class="game-screen" style="display: none" >
-
+        <div id="game-screen" class="game-screen purple" style="display: none">
+            <div class="task-large-pane purple">
+                <h2 class="correct-answer-description">Найдите указанное число:</h2>
+                <span class="correct-number">47</span>
+            </div>
+            <div class="field-grid-of-pane easy">
+                <div class="pane-background purple correct-pane rotate"><span class="pane-inner scale">47</span></div>
+                <div class="pane-background orange flashing"><span class="pane-inner scale">64</span></div>
+                <div class="pane-background red scale"><span class="pane-inner flashing">25</span></div>
+                <div class="pane-background green scale"><span class="pane-inner rotate">3</span></div>
+                <div class="pane-background blue rotate"><span class="pane-inner flashing">488</span></div>
+                <div class="pane-background green flashing"><span class="pane-inner rotate">31</span></div>
+            </div>
         </div>
 
         <div id="end-screen" class="game-screen" style="display: none">

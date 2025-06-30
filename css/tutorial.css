@@ -3,33 +3,6 @@
     cursor: pointer;
     background: var(--blue-color);
 }
-#countdown-screen{
-    background: #067690;
-}
-#game-screen{
-
-}
-#task-large-pane{
-    color: #f7f5fa;
-    background: var(--blue-color);
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    width: 80%;
-    height: 150px;
-    margin: 0 auto;
-    margin-bottom: 3rem;
-    position: relative;
-    top: 2rem;
-    box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
-    -webkit-box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
-    -moz-box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
-}
-span{
-    color: #f7f5fa;
-    font-size: 50px;
-    font-weight: 900;
-}
 .field-grid-of-pane{
     display: grid;
     gap: 3rem;
@@ -37,32 +10,6 @@ span{
     margin: 0 auto;
     &.easy{
         grid-template-columns: repeat(3, 1fr);
-    }
-}
-.pane-background{
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 70%;
-    &#correct-pane{
-        opacity: 100%;
-        position: relative;
-    }
-    &.purple{
-        background-color: var(--purple-color);
-    }
-    &.red{
-        background-color: var(--red-color);
-    }
-    &.orange{
-        background-color: var(--orange-color);
-    }
-    &.blue{
-        background-color: var(--blue-color);
-    }
-    &.green{
-        background-color: var(--green-color);
     }
 }
 #tips-for-tutorial{
@@ -78,18 +25,4 @@ span{
     position: absolute;
     top: 100px;
     z-index: 3;
-}
-#countdown-circle{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100px;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    background-color: #333333;
-    opacity: 0.7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }

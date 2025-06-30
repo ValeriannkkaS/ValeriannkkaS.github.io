@@ -1,0 +1,158 @@
+.pane-background{
+    cursor: pointer;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &#correct-pane{ /*это только для туториала, для позиционирования руки*/
+        position: relative;
+    }
+    &.tutorial{
+        opacity: 70%;
+    }
+    &.purple{
+        background-color: var(--purple-color);
+    }
+    &.red{
+        background-color: var(--red-color);
+    }
+    &.orange{
+        background-color: var(--orange-color);
+    }
+    &.blue{
+        background-color: var(--blue-color);
+    }
+    &.green{
+        background-color: var(--green-color);
+    }
+}
+@keyframes flashing {
+    0% {
+        opacity: 1;
+    }
+    50%{
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes anti-flashing {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes scale {
+    0% {
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(0.8);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+@keyframes anti-scale {
+    0% {
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(1.25);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0);
+    }
+    25%{
+        transform: rotate(8deg);
+    }
+    50% {
+        transform: rotate(0);
+    }
+    75%{
+        transform: rotate(-8deg);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
+@keyframes anti-rotate {
+    0% {
+        transform: rotate(0);
+    }
+    25%{
+        transform: rotate(-8deg);
+    }
+    50% {
+        transform: rotate(0);
+    }
+    75%{
+        transform: rotate(8deg);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
+.pane-background, .pane-inner{/*анимации для плиток и чисел внутри них*/
+    animation-iteration-count: infinite;
+    animation-duration: 0.9s;
+    animation-timing-function: linear;
+    &.rotate{
+        animation-name: rotate;
+    }
+    &.scale{
+        animation-name: scale;
+    }
+    &.flashing{
+        animation-name: flashing;
+    }
+/*
+    &.rotate > .pane-inner.scale{
+        animation-name: scale, anti-rotate;
+    }!*компенсирование анимаций, чтобы, например, внутри увеличивающейся плитки мигающее число не увеличивалось вместе с ней*!
+    &.rotate > .pane-inner.flashing {
+        animation-name: flashing, anti-rotate;
+    }
+    &.scale > .pane-inner.flashing {
+        animation-name: flashing, anti-scale;
+    }
+    &.flashing > .pane-inner.scale {
+        animation-name:  scale, anti-flashing;
+
+    }*/
+}
+.pane-background.scale > .pane-inner.flashing {
+    animation-name: flashing, anti-scale;
+    animation-duration: 0.9s, 0.9s;
+    animation-iteration-count: infinite, infinite;
+    animation-timing-function: linear, linear;
+}
+
+.pane-background.rotate > .pane-inner.flashing {
+    animation-name: flashing, anti-rotate;
+    animation-duration: 0.9s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.pane-background.scale > .pane-inner.rotate {
+    animation-name:  anti-scale, rotate;
+    animation-duration: 0.9s, 0.9s;
+    animation-iteration-count: infinite, infinite;
+    animation-timing-function: linear, linear;
+}
+
+.pane-background.rotate > .pane-inner.rotate {
+    animation-name: rotate;
+    animation-duration: 0.9s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}

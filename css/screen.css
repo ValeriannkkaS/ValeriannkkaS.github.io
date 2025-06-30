@@ -1,0 +1,32 @@
+#game-screen, .task-large-pane{
+    &.purple{
+        background: var(--purple-color);
+    }
+    &.red{
+        background-color: var(--red-color);
+    }
+    &.orange{
+        background-color: var(--orange-color);
+    }
+    &.blue{
+        background-color: var(--blue-color);
+    }
+    &.green{
+        background-color: var(--green-color);
+    }
+}
+.task-large-pane{
+    color: #f7f5fa;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 80%;
+    height: 150px;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+    position: relative;
+    top: 2rem;
+    box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
+    -webkit-box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
+    -moz-box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
+}

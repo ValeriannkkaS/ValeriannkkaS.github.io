@@ -55,7 +55,8 @@ body{
     justify-content: start;
     gap: 1rem;
     color: #f7f5fa;
-    background-color: rgba(19, 119, 119, 0.5);
+    background-image: url("/public/img/screenshot-game-board.png");
+    background-size: contain;
 }
 .start-advantages{
     display: flex;
@@ -86,4 +87,9 @@ body{
         transform: scale(105%);
         transition: 0.15s all;
     }
+}
+span{
+    color: #f7f5fa;
+    font-size: 50px;
+    font-weight: 900;
 }
