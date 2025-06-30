@@ -14,4 +14,10 @@
         grid-template-columns: repeat(5, 1fr);
         gap: 1rem;
     }
+    &.hard span{
+        font-size: 40px;
+    }
+    &.extra-hard span{
+        font-size: 30px;
+    }
 }
