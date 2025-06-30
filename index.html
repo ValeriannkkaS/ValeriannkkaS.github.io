@@ -14,7 +14,7 @@
 <body>
 <div class="wrapper">
     <div class="game-container">
-        <div id="start-screen" class="game-screen" style="display: none">
+        <div id="start-screen" class="game-screen">
             <div class="start-end-header">
                 <h1>
                     Найди число
@@ -82,7 +82,7 @@
                 <div class="timer-score-pane-element">
                     <span class="timer-score-pane-element-description" id="timer-description">ВРЕМЯ</span>
                     <div id="timer">
-                        <span id="minutes">01</span>:<span id="seconds">15</span>
+                        <span id="minutes">00</span>:<span id="seconds">10</span>
                     </div>
                 </div>
                 <div class="timer-score-pane-element">
@@ -107,14 +107,10 @@
                 <h2 class="correct-answer-description">Найдите указанное число:</h2>
                 <div class="correct-number-wrapper"><span class="correct-number" id="correct-number">47</span></div>
             </div>
-
-                <div class="field-grid-of-pane start" id="field-grid-of-pane">
-
-                </div>
-
+            <div class="field-grid-of-pane start" id="field-grid-of-pane"></div>
         </div>
 
-        <div id="end-screen" class="game-screen">
+        <div id="end-screen" class="game-screen" style="display: none">
             <div class="start-end-header">
                 <h1>
                     Ваши результаты:

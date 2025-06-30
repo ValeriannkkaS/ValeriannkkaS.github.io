@@ -26,9 +26,12 @@ function showCountdown() {
         showScreen('game-screen');
         clearInterval(timerId);
         gameTimerId = setInterval(() => updateTimer(), 1000);
-    }, 3000);
+    }, 3000); // запускаем таймер до окончания
 }
 function updateTimer() {
+    if (!+SECONDS.textContent && !+MINUTES.textContent) {
+        return;
+    }
     if (!+SECONDS.textContent) {
         MINUTES.textContent = '0' + (+MINUTES.textContent - 1);
         SECONDS.textContent = '59';
@@ -38,10 +41,6 @@ function updateTimer() {
         } else {
             SECONDS.textContent -= 1;
         }
-    }
-    if (!+SECONDS.textContent && !+MINUTES.textContent) {
-        clearInterval(gameTimerId);
-        showScreen('end-screen');
     }
 }
 function answerHandler(target) {
@@ -80,11 +79,19 @@ function correctAnswerHandler(target) {
     if (countOfCorrectAnswer < 5) {
         countOfCorrectAnswer++;
     }
+    totalAnswer++;
+    totalCorrectAnswer++;
     scoreCount += 100 * bonusCount;
     SCORE_COUNT_DESCRIPTION.textContent = scoreCount;
 
     changeLevelDifficulty(countOfCorrectAnswer);
     renderFieldsWithPanes(levelDifficulty);
+    if (!+SECONDS.textContent && !+MINUTES.textContent) {
+        clearInterval(gameTimerId);
+        renderResults();
+        showScreen('end-screen');
+        // завершаем игру и подсчитываем результаты
+    }
 }
 function wrongAnswerHandler(target) {
     playWrongSound();
@@ -103,8 +110,15 @@ function wrongAnswerHandler(target) {
     if (countOfCorrectAnswer !== 0) {
         countOfCorrectAnswer--;
     }
+    totalAnswer++;
     changeLevelDifficulty(countOfCorrectAnswer);
     renderFieldsWithPanes(levelDifficulty);
+    if (!+SECONDS.textContent && !+MINUTES.textContent) {
+        clearInterval(gameTimerId);
+        renderResults();
+        showScreen('end-screen');
+        // завершаем игру и подсчитываем результаты
+    }
 }
 function changeLevelDifficulty(countOfCorrectAnswer) {
     if (countOfCorrectAnswer === 0 || countOfCorrectAnswer === 1) {
@@ -289,7 +303,35 @@ function renderFieldsWithPanes(levelDifficulty) {
     newField.addEventListener('click', (event) => answerHandler(event.target));
 }
 
+function renderResults() {
+    SCORE_RESULTS.textContent = scoreCount;
+    TOTAL_CORRECT_ANSWER_RESULTS.textContent =
+        totalCorrectAnswer + 'из' + totalAnswer;
+    PERCENTAGE_OF_CORRECT_ANSWER_RESULTS.textContent =
+        ((totalCorrectAnswer / totalAnswer) * 100).toFixed(2) + '%';
+}
+
+function resetTheGame() {
+    document.getElementById('countdown-inner').innerHTML = 3; // таймер для отсчета после обучения
+    MINUTES.textContent = '01';
+    SECONDS.textContent = '30';
+    LEVEL_DESCRIPTION.textContent = '1-2';
+    SCORE_COUNT_DESCRIPTION.textContent = '0';
+    BONUS_COUNT.textContent = 'x1';
+    bonusCount = 1;
+    scoreCount = 0;
+    countOfCorrectAnswer = 0;
+    totalCorrectAnswer = 0;
+    totalAnswer = 0;
+    levelDifficulty = 0;
+    changeActiveBonusCircle(bonusCount);
+    document.getElementById('field-grid-of-pane').innerHTML = '';
+    document.getElementById('correct-number').innerHTML = '';
+}
+
 const START_GAME_BUTTON = document.getElementById('start-game-button');
+4;
+const RESET_GAME_BUTTON = document.getElementById('reset-game-button');
 const TUTORIAL_SCREEN = document.getElementById('tutorial-screen');
 const GAME_SCREEN = document.getElementById('game-screen');
 const TASK_LARGE_PANE = document.getElementById('task-large-pane');
@@ -298,6 +340,13 @@ const BONUS_COUNT = document.getElementById('bonus-count');
 const SCORE_COUNT_DESCRIPTION = document.getElementById('score');
 const MINUTES = document.getElementById('minutes');
 const SECONDS = document.getElementById('seconds');
+const SCORE_RESULTS = document.getElementById('score-result');
+const TOTAL_CORRECT_ANSWER_RESULTS = document.getElementById(
+    'total-correct-answer-result',
+);
+const PERCENTAGE_OF_CORRECT_ANSWER_RESULTS = document.getElementById(
+    'percentage-of-correct-answer-result',
+);
 const CORRECT_ANSWER_PNG = document.getElementById('correct-png');
 const WRONG_ANSWER_PNG = document.getElementById('wrong-png');
 const COLORS = ['orange', 'red', 'green', 'blue', 'purple'];
@@ -305,11 +354,17 @@ const ANIMATIONS = ['rotate', 'scale', 'flashing'];
 let bonusCount = 1;
 let scoreCount = 0;
 let countOfCorrectAnswer = 0;
+let totalCorrectAnswer = 0;
+let totalAnswer = 0;
 let levelDifficulty = 0;
 
 START_GAME_BUTTON.addEventListener('click', () =>
     showScreen('tutorial-screen'),
 );
+RESET_GAME_BUTTON.addEventListener('click', () => {
+    resetTheGame();
+    showScreen('start-screen');
+});
 TUTORIAL_SCREEN.addEventListener('click', (event) => {
     let correct = answerHandler(event.target);
     if (correct) {
