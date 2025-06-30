@@ -40,10 +40,14 @@ function answerHandler(target) {
         return false;
     }
 }
+
 let isAnswerBeingProcessed = false;
 function correctAnswerHandler(target) {
     playCorrectSound();
-    if (target.classList.contains('tutorial') || isAnswerBeingProcessed) {
+    if (
+        target.closest('.pane-background').classList.contains('tutorial') ||
+        isAnswerBeingProcessed
+    ) {
         return;
     }
     isAnswerBeingProcessed = true;
@@ -58,6 +62,7 @@ function correctAnswerHandler(target) {
     if (countOfCorrectAnswer < 5) {
         countOfCorrectAnswer++;
     }
+    console.log(countOfCorrectAnswer);
     changeLevelDifficulty(countOfCorrectAnswer);
     renderFieldsWithPanes(levelDifficulty);
 }
@@ -68,7 +73,10 @@ function wrongAnswerHandler(target) {
         WRONG_ANSWER_PNG.style.display = 'none';
         isAnswerBeingProcessed = false;
     }, 500);
-    if (target.classList.contains('tutorial') || isAnswerBeingProcessed) {
+    if (
+        target.closest('.pane-background').classList.contains('tutorial') ||
+        isAnswerBeingProcessed
+    ) {
         return;
     }
     isAnswerBeingProcessed = true;
@@ -80,17 +88,41 @@ function wrongAnswerHandler(target) {
 }
 function changeLevelDifficulty(countOfCorrectAnswer) {
     if (countOfCorrectAnswer === 0 || countOfCorrectAnswer === 1) {
+        bonusCount = 1;
         levelDifficulty = 0;
+        LEVEL_DESCRIPTION.textContent = '1-4';
+        BONUS_COUNT.textContent = 'x1';
+        changeActiveBonusCircle(bonusCount);
     }
     if (countOfCorrectAnswer === 2) {
+        bonusCount = 2;
         levelDifficulty = 1;
+        LEVEL_DESCRIPTION.textContent = '2-4';
+        BONUS_COUNT.textContent = 'x2';
+        changeActiveBonusCircle(bonusCount);
     }
     if (countOfCorrectAnswer === 3 || countOfCorrectAnswer === 4) {
+        bonusCount = 3;
         levelDifficulty = 2;
+        LEVEL_DESCRIPTION.textContent = '3-4';
+        BONUS_COUNT.textContent = 'x3';
+        changeActiveBonusCircle(bonusCount);
     }
     if (countOfCorrectAnswer === 5) {
+        bonusCount = 4;
         levelDifficulty = 3;
+        LEVEL_DESCRIPTION.textContent = '4-4';
+        BONUS_COUNT.textContent = 'x4';
+        changeActiveBonusCircle(bonusCount);
     }
+}
+function changeActiveBonusCircle(bonusCount) {
+    document.querySelectorAll('.bonus-circle').forEach((circle, index) => {
+        circle.className = 'bonus-circle';
+        if (++index < bonusCount) {
+            circle.classList.add('active');
+        }
+    });
 }
 
 function generatePane(levelDifficulty) {
@@ -239,15 +271,15 @@ function renderFieldsWithPanes(levelDifficulty) {
 
 const START_GAME_BUTTON = document.getElementById('start-game-button');
 const TUTORIAL_SCREEN = document.getElementById('tutorial-screen');
-const GAME_CONTAINER = document.querySelector('.game-container');
 const GAME_SCREEN = document.getElementById('game-screen');
-
-const CORRECT_NUMBER_SPAN = document.getElementById('correct-number');
 const TASK_LARGE_PANE = document.getElementById('task-large-pane');
+const LEVEL_DESCRIPTION = document.getElementById('level');
+const BONUS_COUNT = document.getElementById('bonus-count');
 const CORRECT_ANSWER_PNG = document.getElementById('correct-png');
 const WRONG_ANSWER_PNG = document.getElementById('wrong-png');
 const COLORS = ['orange', 'red', 'green', 'blue', 'purple'];
 const ANIMATIONS = ['rotate', 'scale', 'flashing'];
+let bonusCount = 1;
 let countOfCorrectAnswer = 0;
 let levelDifficulty = 0;
 
