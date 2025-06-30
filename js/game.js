@@ -28,14 +28,14 @@ function showCountdown() {
 }
 function answerHandler(target) {
     //обработчики кликов по плиткам
-    if (!target.classList.contains('pane-background')) {
+    if (!target.closest('.pane-background')) {
         return false;
     }
-    if (target.classList.contains('correct')) {
+    if (target.closest('.pane-background').classList.contains('correct')) {
         correctAnswerHandler(target);
         return true;
     }
-    if (!target.classList.contains('correct')) {
+    if (!target.closest('.pane-background').classList.contains('correct')) {
         wrongAnswerHandler(target);
         return false;
     }
