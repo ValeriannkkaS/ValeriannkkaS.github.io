@@ -48,7 +48,7 @@ body{
     -webkit-box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
     -moz-box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
 }
-.start-header{
+.start-end-header{
     padding: 2rem;
     display: flex;
     flex-direction: column;
@@ -71,7 +71,7 @@ body{
     align-items: center;
     gap: 3rem;
 }
-#start-game-button{
+.game-button{
     font-family: 'Huninn', sans-serif;
     font-size: 1.2rem;
     color: #fff;

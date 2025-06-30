@@ -12,6 +12,7 @@ function showScreen(screenId) {
     document.getElementById(screenId).style.display = 'block';
 }
 
+let gameTimerId;
 function showCountdown() {
     //начинает отсчет перед игрой со звуками
     showScreen('countdown-screen');
@@ -24,7 +25,24 @@ function showCountdown() {
         renderFieldsWithPanes(levelDifficulty);
         showScreen('game-screen');
         clearInterval(timerId);
+        gameTimerId = setInterval(() => updateTimer(), 1000);
     }, 3000);
+}
+function updateTimer() {
+    if (!+SECONDS.textContent) {
+        MINUTES.textContent = '0' + (+MINUTES.textContent - 1);
+        SECONDS.textContent = '59';
+    } else {
+        if (+SECONDS.textContent <= 10) {
+            SECONDS.textContent = '0' + (+SECONDS.textContent - 1);
+        } else {
+            SECONDS.textContent -= 1;
+        }
+    }
+    if (!+SECONDS.textContent && !+MINUTES.textContent) {
+        clearInterval(gameTimerId);
+        showScreen('end-screen');
+    }
 }
 function answerHandler(target) {
     //обработчики кликов по плиткам
@@ -62,7 +80,9 @@ function correctAnswerHandler(target) {
     if (countOfCorrectAnswer < 5) {
         countOfCorrectAnswer++;
     }
-    console.log(countOfCorrectAnswer);
+    scoreCount += 100 * bonusCount;
+    SCORE_COUNT_DESCRIPTION.textContent = scoreCount;
+
     changeLevelDifficulty(countOfCorrectAnswer);
     renderFieldsWithPanes(levelDifficulty);
 }
@@ -275,11 +295,15 @@ const GAME_SCREEN = document.getElementById('game-screen');
 const TASK_LARGE_PANE = document.getElementById('task-large-pane');
 const LEVEL_DESCRIPTION = document.getElementById('level');
 const BONUS_COUNT = document.getElementById('bonus-count');
+const SCORE_COUNT_DESCRIPTION = document.getElementById('score');
+const MINUTES = document.getElementById('minutes');
+const SECONDS = document.getElementById('seconds');
 const CORRECT_ANSWER_PNG = document.getElementById('correct-png');
 const WRONG_ANSWER_PNG = document.getElementById('wrong-png');
 const COLORS = ['orange', 'red', 'green', 'blue', 'purple'];
 const ANIMATIONS = ['rotate', 'scale', 'flashing'];
 let bonusCount = 1;
+let scoreCount = 0;
 let countOfCorrectAnswer = 0;
 let levelDifficulty = 0;
 
