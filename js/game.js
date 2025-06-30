@@ -60,7 +60,6 @@ function correctAnswerHandler(target) {
     }
     changeLevelDifficulty(countOfCorrectAnswer);
     renderFieldsWithPanes(levelDifficulty);
-    console.log(levelDifficulty);
 }
 function wrongAnswerHandler(target) {
     playWrongSound();
@@ -78,7 +77,6 @@ function wrongAnswerHandler(target) {
     }
     changeLevelDifficulty(countOfCorrectAnswer);
     renderFieldsWithPanes(levelDifficulty);
-    console.log(levelDifficulty);
 }
 function changeLevelDifficulty(countOfCorrectAnswer) {
     if (countOfCorrectAnswer === 0 || countOfCorrectAnswer === 1) {
@@ -159,59 +157,91 @@ function renderFieldsWithPanes(levelDifficulty) {
     GAME_SCREEN.classList.add(color);
     TASK_LARGE_PANE.classList.add(color); //большая плитка с правильным ответом, всегда такого же цвета, как и поле
 
-    FIELD_GRID_OF_PANE.innerHTML = '';
-    FIELD_GRID_OF_PANE.className = 'field-grid-of-pane';
+    const oldCorrectAnswer = document.getElementById('correct-number');
+    const oldField = document.getElementById('field-grid-of-pane');
+    if (oldField.classList.contains('start')) {
+        oldField.remove();
+        oldCorrectAnswer.remove();
+    }
+
+    const newField = document.createElement('div');
+    newField.className = 'field-grid-of-pane slide-out-left';
+    GAME_SCREEN.append(newField);
+
     let x;
     let panes = new DocumentFragment();
     switch (levelDifficulty) {
         case 0:
-            FIELD_GRID_OF_PANE.classList.add('easy');
+            newField.classList.add('easy');
             for (let i = 0; i < 6; i++) {
                 panes.append(generatePane(levelDifficulty));
             }
-            FIELD_GRID_OF_PANE.append(panes);
+            newField.append(panes);
             x = 6;
             break;
         case 1:
-            FIELD_GRID_OF_PANE.classList.add('normal');
+            newField.classList.add('normal');
             for (let i = 0; i < 9; i++) {
                 panes.append(generatePane(levelDifficulty));
             }
-            FIELD_GRID_OF_PANE.append(panes);
+            newField.append(panes);
             x = 9;
             break;
         case 2:
-            FIELD_GRID_OF_PANE.classList.add('hard');
+            newField.classList.add('hard');
             for (let i = 0; i < 16; i++) {
                 panes.append(generatePane(levelDifficulty));
             }
-            FIELD_GRID_OF_PANE.append(panes);
+            newField.append(panes);
             x = 17;
             break;
         default:
-            FIELD_GRID_OF_PANE.classList.add('extra-hard');
+            newField.classList.add('extra-hard');
             for (let i = 0; i < 25; i++) {
                 panes.append(generatePane(levelDifficulty));
             }
-            FIELD_GRID_OF_PANE.append(panes);
+            newField.append(panes);
             x = 26;
             break;
     }
-    const gridPanes = FIELD_GRID_OF_PANE.querySelectorAll('.pane-background');
+
+    const gridPanes = newField.querySelectorAll('.pane-background');
     let y = Math.floor(Math.random() * x);
     gridPanes[y].classList.add('correct');
     const number = gridPanes[y].firstElementChild.textContent;
-    CORRECT_NUMBER_SPAN.textContent = number;
-    FIELD_GRID_OF_PANE.addEventListener('click', (event) => {
-        answerHandler(event.target);
+    const newCorrectAnswer = document.createElement('span');
+    newCorrectAnswer.classList.add('slide-out-left');
+    newCorrectAnswer.textContent = number;
+    TASK_LARGE_PANE.lastElementChild.append(newCorrectAnswer);
+
+    newField.id = 'field-grid-of-pane';
+    newCorrectAnswer.id = 'correct-number';
+
+    requestAnimationFrame(() => {
+        oldField.classList.remove('active');
+        oldField.classList.add('slide-in-right');
+        newField.classList.remove('slide-out-left');
+        newField.classList.add('active');
+
+        oldCorrectAnswer.classList.remove('active');
+        oldCorrectAnswer.classList.add('slide-in-right');
+        newCorrectAnswer.classList.remove('slide-out-left');
+        newCorrectAnswer.classList.add('active');
     });
+
+    setTimeout(() => {
+        oldField.remove();
+        oldCorrectAnswer.remove();
+    }, 200);
+
+    newField.addEventListener('click', (event) => answerHandler(event.target));
 }
 
 const START_GAME_BUTTON = document.getElementById('start-game-button');
 const TUTORIAL_SCREEN = document.getElementById('tutorial-screen');
-const GAME_CONTAINER = document.getElementById('game-container');
+const GAME_CONTAINER = document.querySelector('.game-container');
 const GAME_SCREEN = document.getElementById('game-screen');
-const FIELD_GRID_OF_PANE = document.getElementById('field-grid-of-pane');
+
 const CORRECT_NUMBER_SPAN = document.getElementById('correct-number');
 const TASK_LARGE_PANE = document.getElementById('task-large-pane');
 const CORRECT_ANSWER_PNG = document.getElementById('correct-png');

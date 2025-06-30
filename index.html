@@ -51,9 +51,11 @@
         <div id="tutorial-screen" class="game-screen" style="display: none">
             <div class="task-large-pane blue">
                 <h2 class="correct-answer-description">Найдите указанное число:</h2>
-                <span class="correct-number">47</span>
+                <div class="correct-number-wrapper">
+                    <span class="correct-number">47</span>
+                </div>
             </div>
-            <div class="field-grid-of-pane easy">
+            <div class="field-grid-of-pane easy active">
                 <div class="pane-background purple correct tutorial" id="correct-pane-tutorial">
                     <img src="public/img/arm-for-tutorial.svg" id="arm-for-tutorial" />
                     <span class="pane-inner">47</span>
@@ -78,11 +80,13 @@
         <div id="game-screen" class="game-screen purple" style="display: none">
             <div class="task-large-pane purple" id="task-large-pane">
                 <h2 class="correct-answer-description">Найдите указанное число:</h2>
-                <span class="correct-number" id="correct-number">47</span>
+                <div class="correct-number-wrapper"><span class="correct-number" id="correct-number">47</span></div>
             </div>
-            <div class="field-grid-of-pane hard" id="field-grid-of-pane">
 
-            </div>
+                <div class="field-grid-of-pane start" id="field-grid-of-pane">
+
+                </div>
+
         </div>
 
         <div id="end-screen" class="game-screen" style="display: none">

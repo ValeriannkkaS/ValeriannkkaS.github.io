@@ -119,45 +119,5 @@
     &.flashing{
         animation-name: flashing;
     }
-/*
-    &.rotate > .pane-inner.scale{
-        animation-name: scale, anti-rotate;
-    }!*компенсирование анимаций, чтобы, например, внутри увеличивающейся плитки мигающее число не увеличивалось вместе с ней*!
-    &.rotate > .pane-inner.flashing {
-        animation-name: flashing, anti-rotate;
-    }
-    &.scale > .pane-inner.flashing {
-        animation-name: flashing, anti-scale;
-    }
-    &.flashing > .pane-inner.scale {
-        animation-name:  scale, anti-flashing;
-
-    }*/
-}
-.pane-background.scale > .pane-inner.flashing {
-    animation-name: flashing, anti-scale;
-    animation-duration: 0.9s, 0.9s;
-    animation-iteration-count: infinite, infinite;
-    animation-timing-function: linear, linear;
 }
 
-.pane-background.rotate > .pane-inner.flashing {
-    animation-name: flashing, anti-rotate;
-    animation-duration: 0.9s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-}
-
-.pane-background.scale > .pane-inner.rotate {
-    animation-name:  anti-scale, rotate;
-    animation-duration: 0.9s, 0.9s;
-    animation-iteration-count: infinite, infinite;
-    animation-timing-function: linear, linear;
-}
-
-.pane-background.rotate > .pane-inner.rotate {
-    animation-name: rotate;
-    animation-duration: 0.9s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-}

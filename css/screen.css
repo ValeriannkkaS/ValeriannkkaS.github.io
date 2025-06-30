@@ -15,6 +15,10 @@
         background-color: var(--green-color);
     }
 }
+#game-screen{
+    position: relative;
+
+}
 .task-large-pane{
     color: #f7f5fa;
     display: flex;
@@ -29,4 +33,28 @@
     box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
     -webkit-box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
     -moz-box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
+}
+.correct-number-wrapper{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.task-large-pane span{
+    position: absolute;
+
+    transition: transform 0.5s ease;
+    &.slide-out-left {
+        transform: translateX(1000px);
+        transition: transform 0.5s ease;
+    }
+    &.slide-in-right {
+        transform: translateX(-1000px);
+        transition: transform 0.5s ease;
+    }
+    &.active {
+        transform: translateX(0);
+        transition: transform 0.5s ease;
+    }
 }

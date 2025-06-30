@@ -3,6 +3,21 @@
     gap: 3rem;
     width: 80%;
     margin: 1rem auto;
+    position: absolute;
+    left: 50%;
+    transition: transform 0.5s ease;
+    &.slide-out-left {
+        transform: translateX(200%);
+        transition: transform 0.5s ease;
+    }
+    &.slide-in-right {
+        transform: translateX(-200%);
+        transition: transform 0.5s ease;
+    }
+    &.active {
+        transform: translateX(-50%);
+        transition: transform 0.5s ease;
+    }
     &.easy, &.normal{
         grid-template-columns: repeat(3, 1fr);
     }
