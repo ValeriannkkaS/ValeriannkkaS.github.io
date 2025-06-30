@@ -4,10 +4,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    &#correct-pane{ /*это только для туториала, для позиционирования руки*/
+    &#correct-pane-tutorial{ /*это только для туториала, для позиционирования руки*/
         position: relative;
     }
-    &.tutorial{
+    &.tutorial.opacity{
         opacity: 70%;
     }
     &.purple{
@@ -24,6 +24,11 @@
     }
     &.green{
         background-color: var(--green-color);
+    }
+    &:hover{
+        box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
+        -webkit-box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
+        -moz-box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);;
     }
 }
 @keyframes flashing {
