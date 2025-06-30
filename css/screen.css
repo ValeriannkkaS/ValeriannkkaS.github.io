@@ -17,6 +17,7 @@
 }
 #game-screen{
     position: relative;
+    overflow: hidden;
 }
 .task-large-pane{
     color: #f7f5fa;

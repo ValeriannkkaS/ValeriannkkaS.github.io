@@ -45,14 +45,15 @@ function updateTimer() {
 }
 function answerHandler(target) {
     //обработчики кликов по плиткам
-    if (!target.closest('.pane-background')) {
+    const pane = target.closest('.pane-background');
+    if (!pane) {
         return false;
     }
-    if (target.closest('.pane-background').classList.contains('correct')) {
+    if (pane.classList.contains('correct')) {
         correctAnswerHandler(target);
         return true;
     }
-    if (!target.closest('.pane-background').classList.contains('correct')) {
+    if (!pane.classList.contains('correct')) {
         wrongAnswerHandler(target);
         return false;
     }
@@ -86,12 +87,7 @@ function correctAnswerHandler(target) {
 
     changeLevelDifficulty(countOfCorrectAnswer);
     renderFieldsWithPanes(levelDifficulty);
-    if (!+SECONDS.textContent && !+MINUTES.textContent) {
-        clearInterval(gameTimerId);
-        renderResults();
-        showScreen('end-screen');
-        // завершаем игру и подсчитываем результаты
-    }
+    checkGameEnd(+SECONDS.textContent, +MINUTES.textContent);
 }
 function wrongAnswerHandler(target) {
     playWrongSound();
@@ -113,43 +109,39 @@ function wrongAnswerHandler(target) {
     totalAnswer++;
     changeLevelDifficulty(countOfCorrectAnswer);
     renderFieldsWithPanes(levelDifficulty);
-    if (!+SECONDS.textContent && !+MINUTES.textContent) {
+    checkGameEnd(+SECONDS.textContent, +MINUTES.textContent);
+}
+function checkGameEnd(seconds, minutes) {
+    if (!seconds && !minutes) {
         clearInterval(gameTimerId);
         renderResults();
         showScreen('end-screen');
         // завершаем игру и подсчитываем результаты
     }
 }
+
+const levels = [
+    { min: 0, max: 1, bonus: 1, difficulty: 0, text: '1-4' },
+    { min: 2, max: 2, bonus: 2, difficulty: 1, text: '2-4' },
+    { min: 3, max: 4, bonus: 3, difficulty: 2, text: '3-4' },
+    { min: 5, max: 5, bonus: 4, difficulty: 3, text: '4-4' },
+];
 function changeLevelDifficulty(countOfCorrectAnswer) {
-    if (countOfCorrectAnswer === 0 || countOfCorrectAnswer === 1) {
-        bonusCount = 1;
-        levelDifficulty = 0;
-        LEVEL_DESCRIPTION.textContent = '1-4';
-        BONUS_COUNT.textContent = 'x1';
-        changeActiveBonusCircle(bonusCount);
-    }
-    if (countOfCorrectAnswer === 2) {
-        bonusCount = 2;
-        levelDifficulty = 1;
-        LEVEL_DESCRIPTION.textContent = '2-4';
-        BONUS_COUNT.textContent = 'x2';
-        changeActiveBonusCircle(bonusCount);
-    }
-    if (countOfCorrectAnswer === 3 || countOfCorrectAnswer === 4) {
-        bonusCount = 3;
-        levelDifficulty = 2;
-        LEVEL_DESCRIPTION.textContent = '3-4';
-        BONUS_COUNT.textContent = 'x3';
-        changeActiveBonusCircle(bonusCount);
-    }
-    if (countOfCorrectAnswer === 5) {
-        bonusCount = 4;
-        levelDifficulty = 3;
-        LEVEL_DESCRIPTION.textContent = '4-4';
-        BONUS_COUNT.textContent = 'x4';
-        changeActiveBonusCircle(bonusCount);
+    for (let level of levels) {
+        if (
+            countOfCorrectAnswer >= level.min &&
+            countOfCorrectAnswer <= level.max
+        ) {
+            bonusCount = level.bonus;
+            levelDifficulty = level.difficulty;
+            LEVEL_DESCRIPTION.textContent = level.text;
+            BONUS_COUNT.textContent = 'x' + bonusCount;
+            changeActiveBonusCircle(bonusCount);
+            break;
+        }
     }
 }
+
 function changeActiveBonusCircle(bonusCount) {
     document.querySelectorAll('.bonus-circle').forEach((circle, index) => {
         circle.className = 'bonus-circle';
@@ -234,45 +226,23 @@ function renderFieldsWithPanes(levelDifficulty) {
     newField.className = 'field-grid-of-pane slide-out-left';
     GAME_SCREEN.append(newField);
 
-    let x;
     let panes = new DocumentFragment();
-    switch (levelDifficulty) {
-        case 0:
-            newField.classList.add('easy');
-            for (let i = 0; i < 6; i++) {
-                panes.append(generatePane(levelDifficulty));
-            }
-            newField.append(panes);
-            x = 6;
-            break;
-        case 1:
-            newField.classList.add('normal');
-            for (let i = 0; i < 9; i++) {
-                panes.append(generatePane(levelDifficulty));
-            }
-            newField.append(panes);
-            x = 9;
-            break;
-        case 2:
-            newField.classList.add('hard');
-            for (let i = 0; i < 16; i++) {
-                panes.append(generatePane(levelDifficulty));
-            }
-            newField.append(panes);
-            x = 17;
-            break;
-        default:
-            newField.classList.add('extra-hard');
-            for (let i = 0; i < 25; i++) {
-                panes.append(generatePane(levelDifficulty));
-            }
-            newField.append(panes);
-            x = 26;
-            break;
+
+    const fieldConfigs = {
+        0: { className: 'easy', count: 6 },
+        1: { className: 'normal', count: 9 },
+        2: { className: 'hard', count: 16 },
+        3: { className: 'extra-hard', count: 25 },
+    };
+    const { className, count } = fieldConfigs[levelDifficulty];
+    newField.classList.add(className);
+    for (let i = 0; i < count; i++) {
+        panes.append(generatePane(levelDifficulty));
     }
+    newField.append(panes);
 
     const gridPanes = newField.querySelectorAll('.pane-background');
-    let y = Math.floor(Math.random() * x);
+    let y = Math.floor(Math.random() * (count + 1)); // число для выбора правильной плитке на уровне
     gridPanes[y].classList.add('correct');
     const number = gridPanes[y].firstElementChild.textContent;
     const newCorrectAnswer = document.createElement('span');
@@ -284,6 +254,7 @@ function renderFieldsWithPanes(levelDifficulty) {
     newCorrectAnswer.id = 'correct-number';
 
     requestAnimationFrame(() => {
+        //анимации появления
         oldField.classList.remove('active');
         oldField.classList.add('slide-in-right');
         newField.classList.remove('slide-out-left');
