@@ -26,7 +26,6 @@ function showCountdown() {
         clearInterval(timerId);
     }, 3000);
 }
-
 function answerHandler(target) {
     //обработчики кликов по плиткам
     if (!target.classList.contains('pane-background')) {
@@ -41,30 +40,59 @@ function answerHandler(target) {
         return false;
     }
 }
+let isAnswerBeingProcessed = false;
 function correctAnswerHandler(target) {
     playCorrectSound();
-    if (target.classList.contains('tutorial')) {
+    if (target.classList.contains('tutorial') || isAnswerBeingProcessed) {
         return;
     }
+    isAnswerBeingProcessed = true;
     CORRECT_ANSWER_PNG.style.display = 'block';
     setTimeout(() => {
         CORRECT_ANSWER_PNG.style.display = 'none';
+        isAnswerBeingProcessed = false;
     }, 500);
     if (target.classList.contains('tutorial')) {
         return;
     }
-    countOfCorrectAnswer++;
+    if (countOfCorrectAnswer < 5) {
+        countOfCorrectAnswer++;
+    }
+    changeLevelDifficulty(countOfCorrectAnswer);
+    renderFieldsWithPanes(levelDifficulty);
+    console.log(levelDifficulty);
 }
 function wrongAnswerHandler(target) {
     playWrongSound();
     WRONG_ANSWER_PNG.style.display = 'block';
     setTimeout(() => {
         WRONG_ANSWER_PNG.style.display = 'none';
+        isAnswerBeingProcessed = false;
     }, 500);
-    if (target.classList.contains('tutorial')) {
+    if (target.classList.contains('tutorial') || isAnswerBeingProcessed) {
         return;
     }
-    countOfCorrectAnswer--;
+    isAnswerBeingProcessed = true;
+    if (countOfCorrectAnswer !== 0) {
+        countOfCorrectAnswer--;
+    }
+    changeLevelDifficulty(countOfCorrectAnswer);
+    renderFieldsWithPanes(levelDifficulty);
+    console.log(levelDifficulty);
+}
+function changeLevelDifficulty(countOfCorrectAnswer) {
+    if (countOfCorrectAnswer === 0 || countOfCorrectAnswer === 1) {
+        levelDifficulty = 0;
+    }
+    if (countOfCorrectAnswer === 2) {
+        levelDifficulty = 1;
+    }
+    if (countOfCorrectAnswer === 3 || countOfCorrectAnswer === 4) {
+        levelDifficulty = 2;
+    }
+    if (countOfCorrectAnswer === 5) {
+        levelDifficulty = 3;
+    }
 }
 
 function generatePane(levelDifficulty) {
@@ -126,10 +154,12 @@ function randomizeAnimations() {
 
 function renderFieldsWithPanes(levelDifficulty) {
     GAME_SCREEN.className = 'game-screen';
+    TASK_LARGE_PANE.className = 'task-large-pane';
     const color = randomizeColor();
     GAME_SCREEN.classList.add(color);
-    GAME_SCREEN.firstElementChild.classList.add(color); //большая плитка с правильным ответом, всегда такого же цвета, как и поле
+    TASK_LARGE_PANE.classList.add(color); //большая плитка с правильным ответом, всегда такого же цвета, как и поле
 
+    FIELD_GRID_OF_PANE.innerHTML = '';
     FIELD_GRID_OF_PANE.className = 'field-grid-of-pane';
     let x;
     let panes = new DocumentFragment();
@@ -169,8 +199,12 @@ function renderFieldsWithPanes(levelDifficulty) {
     }
     const gridPanes = FIELD_GRID_OF_PANE.querySelectorAll('.pane-background');
     let y = Math.floor(Math.random() * x);
+    gridPanes[y].classList.add('correct');
     const number = gridPanes[y].firstElementChild.textContent;
     CORRECT_NUMBER_SPAN.textContent = number;
+    FIELD_GRID_OF_PANE.addEventListener('click', (event) => {
+        answerHandler(event.target);
+    });
 }
 
 const START_GAME_BUTTON = document.getElementById('start-game-button');
@@ -179,6 +213,7 @@ const GAME_CONTAINER = document.getElementById('game-container');
 const GAME_SCREEN = document.getElementById('game-screen');
 const FIELD_GRID_OF_PANE = document.getElementById('field-grid-of-pane');
 const CORRECT_NUMBER_SPAN = document.getElementById('correct-number');
+const TASK_LARGE_PANE = document.getElementById('task-large-pane');
 const CORRECT_ANSWER_PNG = document.getElementById('correct-png');
 const WRONG_ANSWER_PNG = document.getElementById('wrong-png');
 const COLORS = ['orange', 'red', 'green', 'blue', 'purple'];
