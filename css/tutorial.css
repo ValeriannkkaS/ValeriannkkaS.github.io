@@ -3,15 +3,6 @@
     cursor: pointer;
     background: var(--blue-color);
 }
-.field-grid-of-pane{
-    display: grid;
-    gap: 3rem;
-    width: 80%;
-    margin: 0 auto;
-    &.easy{
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
 #tips-for-tutorial{
     color: #f7f5fa;
     position: absolute;

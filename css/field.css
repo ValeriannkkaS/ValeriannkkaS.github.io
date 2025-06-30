@@ -1,0 +1,17 @@
+.field-grid-of-pane{
+    display: grid;
+    gap: 3rem;
+    width: 80%;
+    margin: 1rem auto;
+    &.easy, &.normal{
+        grid-template-columns: repeat(3, 1fr);
+    }
+    &.hard{
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+    &.extra-hard{
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1rem;
+    }
+}
