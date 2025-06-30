@@ -42,7 +42,7 @@ body{
 .game-container{
     position: relative;
     width: 900px;
-    height: 650px;
+    height: 700px;
     background: #ffffff;
     box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
     -webkit-box-shadow: 5px 4px 12px 5px rgba(107,106,106,0.64);
