@@ -15,7 +15,7 @@ export const uiElements = {
     percentageOfCorrectAnswerResultsSpan: document.getElementById(
         'percentage-of-correct-answer-result',
     ),
+    startTutorialGameButton: document.getElementById('start-game-button'),
+    restartGameButton: document.getElementById('reset-game-button'),
+    tutorialScreen: document.getElementById('tutorial-screen'),
 };
-const START_GAME_BUTTON = document.getElementById('start-game-button');
-const RESET_GAME_BUTTON = document.getElementById('reset-game-button');
-const TUTORIAL_SCREEN = document.getElementById('tutorial-screen');

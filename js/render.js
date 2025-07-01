@@ -106,6 +106,22 @@ export function generatePane(levelDifficulty) {
     }
 }
 
+export function updateTimer(secondsSpan, minutesSpan) {
+    if (!+secondsSpan.textContent && !+minutesSpan.textContent) {
+        return;
+    }
+    if (!+secondsSpan.textContent) {
+        minutesSpan.textContent = '0' + (+minutesSpan.textContent - 1);
+        secondsSpan.textContent = '59';
+    } else {
+        if (+secondsSpan.textContent <= 10) {
+            secondsSpan.textContent = '0' + (+secondsSpan.textContent - 1);
+        } else {
+            secondsSpan.textContent -= 1;
+        }
+    }
+}
+
 export function renderResults(uiElements, gameState) {
     uiElements.scoreResultsSpan.textContent = gameState.scoreCount;
     uiElements.totalCorrectAnswerResultsSpan.textContent =
