@@ -3,14 +3,9 @@ import {
     playCorrectSound,
     playWrongSound,
 } from './sounds.js';
-
-function showScreen(screenId) {
-    //показ экранов (обучение/игра и т.д.)
-    document.querySelectorAll('.game-screen').forEach((screen) => {
-        screen.style.display = 'none';
-    });
-    document.getElementById(screenId).style.display = 'block';
-}
+import { showScreen } from './screens.js';
+import { changeLevelDifficulty, changeActiveBonusCircle } from './level.js';
+import { gameState } from './gameState.js';
 
 let gameTimerId;
 function showCountdown() {
@@ -22,7 +17,7 @@ function showCountdown() {
         countdownInner.innerHTML -= 1;
     }, 1000);
     setTimeout(() => {
-        renderFieldsWithPanes(levelDifficulty);
+        renderFieldsWithPanes(gameState.levelDifficulty);
         showScreen('game-screen');
         clearInterval(timerId);
         gameTimerId = setInterval(() => updateTimer(), 1000);
@@ -77,16 +72,19 @@ function correctAnswerHandler(target) {
     if (target.classList.contains('tutorial')) {
         return;
     }
-    if (countOfCorrectAnswer < 5) {
-        countOfCorrectAnswer++;
+    if (gameState.countOfCorrectAnswer < 5) {
+        gameState.countOfCorrectAnswer++;
     }
     totalAnswer++;
     totalCorrectAnswer++;
-    scoreCount += 100 * bonusCount;
+    scoreCount += 100 * gameState.bonusCount;
     SCORE_COUNT_DESCRIPTION.textContent = scoreCount;
 
-    changeLevelDifficulty(countOfCorrectAnswer);
-    renderFieldsWithPanes(levelDifficulty);
+    changeLevelDifficulty({
+        levelDescriptionSpan: LEVEL_DESCRIPTION,
+        bonusCountSpan: BONUS_COUNT,
+    });
+    renderFieldsWithPanes(gameState.levelDifficulty);
     checkGameEnd(+SECONDS.textContent, +MINUTES.textContent);
 }
 function wrongAnswerHandler(target) {
@@ -103,12 +101,15 @@ function wrongAnswerHandler(target) {
         return;
     }
     isAnswerBeingProcessed = true;
-    if (countOfCorrectAnswer !== 0) {
-        countOfCorrectAnswer--;
+    if (gameState.countOfCorrectAnswer !== 0) {
+        gameState.countOfCorrectAnswer--;
     }
     totalAnswer++;
-    changeLevelDifficulty(countOfCorrectAnswer);
-    renderFieldsWithPanes(levelDifficulty);
+    changeLevelDifficulty({
+        levelDescriptionSpan: LEVEL_DESCRIPTION,
+        bonusCountSpan: BONUS_COUNT,
+    });
+    renderFieldsWithPanes(gameState.levelDifficulty);
     checkGameEnd(+SECONDS.textContent, +MINUTES.textContent);
 }
 function checkGameEnd(seconds, minutes) {
@@ -120,37 +121,6 @@ function checkGameEnd(seconds, minutes) {
     }
 }
 
-const levels = [
-    { min: 0, max: 1, bonus: 1, difficulty: 0, text: '1-4' },
-    { min: 2, max: 2, bonus: 2, difficulty: 1, text: '2-4' },
-    { min: 3, max: 4, bonus: 3, difficulty: 2, text: '3-4' },
-    { min: 5, max: 5, bonus: 4, difficulty: 3, text: '4-4' },
-];
-function changeLevelDifficulty(countOfCorrectAnswer) {
-    for (let level of levels) {
-        if (
-            countOfCorrectAnswer >= level.min &&
-            countOfCorrectAnswer <= level.max
-        ) {
-            bonusCount = level.bonus;
-            levelDifficulty = level.difficulty;
-            LEVEL_DESCRIPTION.textContent = level.text;
-            BONUS_COUNT.textContent = 'x' + bonusCount;
-            changeActiveBonusCircle(bonusCount);
-            break;
-        }
-    }
-}
-
-function changeActiveBonusCircle(bonusCount) {
-    document.querySelectorAll('.bonus-circle').forEach((circle, index) => {
-        circle.className = 'bonus-circle';
-        if (++index < bonusCount) {
-            circle.classList.add('active');
-        }
-    });
-}
-
 function generatePane(levelDifficulty) {
     //рендер плиток (в зависимости от сложности уровня к ним (и числам внутри них) применяются либо не применяются анимации)
     const pane = document.createElement('div');
@@ -159,14 +129,14 @@ function generatePane(levelDifficulty) {
 
     const number = document.createElement('span');
     number.classList.add('pane-inner');
-    number.textContent = randomizeNumber(levelDifficulty);
+    number.textContent = randomizeNumber(gameState.levelDifficulty);
 
     pane.appendChild(number);
 
-    if (levelDifficulty === 0) {
+    if (gameState.levelDifficulty === 0) {
         return pane;
     }
-    if (levelDifficulty === 1 || levelDifficulty === 2) {
+    if (gameState.levelDifficulty === 1 || gameState.levelDifficulty === 2) {
         const x = Math.floor(Math.random() * 2);
         if (x) {
             pane.classList.add(randomizeAnimations());
@@ -175,7 +145,7 @@ function generatePane(levelDifficulty) {
         }
         return pane;
     }
-    if (levelDifficulty === 3) {
+    if (gameState.levelDifficulty === 3) {
         pane.classList.add(randomizeAnimations());
         number.classList.add(randomizeAnimations());
         return pane;
@@ -189,7 +159,7 @@ function randomizeColor() {
 function randomizeNumber(levelDifficulty) {
     //выдает плитке случайное число
     let coeff;
-    switch (levelDifficulty) {
+    switch (gameState.levelDifficulty) {
         case 0:
             coeff = 100;
             break;
@@ -234,10 +204,10 @@ function renderFieldsWithPanes(levelDifficulty) {
         2: { className: 'hard', count: 16 },
         3: { className: 'extra-hard', count: 25 },
     };
-    const { className, count } = fieldConfigs[levelDifficulty];
+    const { className, count } = fieldConfigs[gameState.levelDifficulty];
     newField.classList.add(className);
     for (let i = 0; i < count; i++) {
-        panes.append(generatePane(levelDifficulty));
+        panes.append(generatePane(gameState.levelDifficulty));
     }
     newField.append(panes);
 
@@ -289,19 +259,18 @@ function resetTheGame() {
     LEVEL_DESCRIPTION.textContent = '1-2';
     SCORE_COUNT_DESCRIPTION.textContent = '0';
     BONUS_COUNT.textContent = 'x1';
-    bonusCount = 1;
+    gameState.bonusCount = 1;
     scoreCount = 0;
-    countOfCorrectAnswer = 0;
+    gameState.countOfCorrectAnswer = 0;
     totalCorrectAnswer = 0;
     totalAnswer = 0;
     levelDifficulty = 0;
-    changeActiveBonusCircle(bonusCount);
+    changeActiveBonusCircle(gameState.bonusCount);
     document.getElementById('field-grid-of-pane').innerHTML = '';
     document.getElementById('correct-number').innerHTML = '';
 }
 
 const START_GAME_BUTTON = document.getElementById('start-game-button');
-4;
 const RESET_GAME_BUTTON = document.getElementById('reset-game-button');
 const TUTORIAL_SCREEN = document.getElementById('tutorial-screen');
 const GAME_SCREEN = document.getElementById('game-screen');
@@ -322,9 +291,7 @@ const CORRECT_ANSWER_PNG = document.getElementById('correct-png');
 const WRONG_ANSWER_PNG = document.getElementById('wrong-png');
 const COLORS = ['orange', 'red', 'green', 'blue', 'purple'];
 const ANIMATIONS = ['rotate', 'scale', 'flashing'];
-let bonusCount = 1;
 let scoreCount = 0;
-let countOfCorrectAnswer = 0;
 let totalCorrectAnswer = 0;
 let totalAnswer = 0;
 let levelDifficulty = 0;
