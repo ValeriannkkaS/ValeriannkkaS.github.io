@@ -1,15 +1,10 @@
-import { gameState } from './gameState.js';
-
 const levels = [
     { min: 0, max: 1, bonus: 1, difficulty: 0, text: '1-4' },
     { min: 2, max: 2, bonus: 2, difficulty: 1, text: '2-4' },
     { min: 3, max: 4, bonus: 3, difficulty: 2, text: '3-4' },
     { min: 5, max: 5, bonus: 4, difficulty: 3, text: '4-4' },
 ];
-export function changeLevelDifficulty({
-    levelDescriptionSpan,
-    bonusCountSpan,
-}) {
+export function changeLevelDifficulty(uiElements, gameState) {
     for (let level of levels) {
         if (
             gameState.countOfCorrectAnswer >= level.min &&
@@ -17,8 +12,8 @@ export function changeLevelDifficulty({
         ) {
             gameState.bonusCount = level.bonus;
             gameState.levelDifficulty = level.difficulty;
-            levelDescriptionSpan.textContent = level.text;
-            bonusCountSpan.textContent = 'x' + gameState.bonusCount;
+            uiElements.levelDescriptionSpan.textContent = level.text;
+            uiElements.bonusCountSpan.textContent = 'x' + gameState.bonusCount;
             changeActiveBonusCircle(gameState.bonusCount);
             break;
         }
