@@ -41,7 +41,7 @@ export function renderFieldsWithPanes(levelDifficulty, uiElements, gameState) {
     newField.append(panes);
 
     const gridPanes = newField.querySelectorAll('.pane-background');
-    let y = Math.floor(Math.random() * (count + 1)); // число для выбора правильной плитке на уровне
+    let y = Math.floor(Math.random() * count); // число для выбора правильной плитке на уровне
     gridPanes[y].classList.add('correct');
     const number = gridPanes[y].firstElementChild.textContent;
     const newCorrectAnswer = document.createElement('span');
