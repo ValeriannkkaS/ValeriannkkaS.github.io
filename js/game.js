@@ -5,6 +5,11 @@ import {
 } from './sounds.js';
 import { showScreen } from './screens.js';
 import { changeLevelDifficulty, changeActiveBonusCircle } from './level.js';
+import {
+    randomizeNumber,
+    randomizeColor,
+    randomizeAnimations,
+} from './randomize.js';
 import { gameState } from './gameState.js';
 
 let gameTimerId;
@@ -150,32 +155,6 @@ function generatePane(levelDifficulty) {
         number.classList.add(randomizeAnimations());
         return pane;
     }
-}
-function randomizeColor() {
-    //выдает плитке случайный цвет
-    const x = Math.floor(Math.random() * 5);
-    return COLORS[x];
-}
-function randomizeNumber(levelDifficulty) {
-    //выдает плитке случайное число
-    let coeff;
-    switch (gameState.levelDifficulty) {
-        case 0:
-            coeff = 100;
-            break;
-        case 1:
-            coeff = 1000;
-            break;
-        default:
-            coeff = 10000;
-            break;
-    }
-    return Math.floor(Math.random() * coeff);
-}
-function randomizeAnimations() {
-    //выдает случайную анимацию
-    const x = Math.floor(Math.random() * 3);
-    return ANIMATIONS[x];
 }
 
 function renderFieldsWithPanes(levelDifficulty) {
